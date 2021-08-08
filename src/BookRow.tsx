@@ -1,12 +1,46 @@
 import React from "react";
-import BooksTable from "./App";
+import Card from "react-bootstrap/Card";
+import {Button} from "react-bootstrap";
+import Table from "react-bootstrap/Table";
+
 
 interface Props {
-    // TODO: Здесь определить сворйства так же как и в
-};
-
-// TODO: Убрать "Remove" после переноса кода строки сюда
-class BookRowRemove extends React.Component<Props, {}> {
-
+    id: number;
+    title: string;
+    authorName: string;
+    publishingHouse: string;
+    publishingDate: string;
+    productImageUrl: string;
 }
-export default BookRowRemove;
+
+class BookRow extends React.Component<Props, {}> {
+    imgSize = '3rem';
+    render() {
+        const {
+            id,
+            title,
+            authorName,
+            publishingHouse,
+            publishingDate,
+            productImageUrl,
+        } = this.props; // декомпозирование
+
+        return(
+            <tr>
+                <td>{id}</td>
+                <td>{title}</td>
+                <td>{authorName}</td>
+                <td>{publishingHouse}</td>
+                <td>{publishingDate}</td>
+                <td>
+                    <Card  style={{ width: this.imgSize }}>
+                        <Button variant="outline-light" >
+                            <Card.Img variant="top" src={productImageUrl} />
+                        </Button>
+                    </Card>
+                </td>
+            </tr>
+        )
+    }
+}
+export default BookRow;
