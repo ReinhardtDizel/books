@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import BookItem from "./App";
+import PageGrid from "./App";
 
 ReactDOM.render(
     <React.StrictMode>
-        <BookItem />
+        <PageGrid />
     </React.StrictMode>,
     document.getElementById('content')
 );

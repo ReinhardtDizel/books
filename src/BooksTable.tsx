@@ -1,8 +1,31 @@
 import React from "react";
-import BookRowRemove from "./BookRow";
+import BookRow from "./BookRow";
+import Table from "react-bootstrap/Table";
+import {booksData} from "./BooksData";
 
-// TODO: Убрать "Remove" после переноса кода таблицы сюда
-class BooksTableRemove extends React.Component {
-
+class BooksTable extends React.Component {
+    render() {
+        const bookComponents = booksData.map((book)=> (
+            <BookRow
+                id={book.id}
+                title={book.title}
+                authorName={book.authorName}
+                publishingHouse={book.publishingHouse}
+                publishingDate={book.publishingDate}
+                productImageUrl={book.productImageUrl}
+            />
+        ));
+        return (
+            <div className='ui items'>
+                <Table>
+                    <thead>
+                    </thead>
+                    <tbody>
+                    {bookComponents}
+                    </tbody>
+                </Table>
+            </div>
+        )
+    }
 }
-export default BooksTableRemove;
+export default BooksTable;
