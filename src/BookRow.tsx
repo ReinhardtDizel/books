@@ -26,9 +26,12 @@ interface State {
 class BookRow extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
+        this.mouseClick = this.mouseClick.bind(this);
     }
     static defaultProps = {
         imgSize: '5rem'
+    }
+    mouseClick(event:any) {
     }
     render() {
         const {
@@ -47,7 +50,7 @@ class BookRow extends React.Component<Props, State> {
                 <td>{publishingHouse}</td>
                 <td>{publishingDate}</td>
                 <td>
-                    <Card  style={{ width: this.props.imgSize}}>
+                    <Card  style={{ width: this.props.imgSize}} >
                         <Card.Img variant="top" src={productImageUrl} />
                     </Card>
                 </td>
