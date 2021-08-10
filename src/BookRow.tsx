@@ -5,16 +5,31 @@ import Table from "react-bootstrap/Table";
 
 
 interface Props {
-    id: number;
-    title: string;
-    authorName: string;
-    publishingHouse: string;
-    publishingDate: string;
-    productImageUrl: string;
+    id?: number;
+    title?: string;
+    authorName?: string;
+    publishingHouse?: string;
+    publishingDate?: string;
+    productImageUrl?: string;
+    imgSize?: string;
+}
+interface State {
+    id?: number;
+    title?: string;
+    authorName?: string;
+    publishingHouse?: string;
+    publishingDate?: string;
+    productImageUrl?: string;
+    isSelected?: boolean;
 }
 
-class BookRow extends React.Component<Props, {}> {
-    imgSize = '3rem';
+class BookRow extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
+    }
+    static defaultProps = {
+        imgSize: '5rem'
+    }
     render() {
         const {
             id,
@@ -24,7 +39,6 @@ class BookRow extends React.Component<Props, {}> {
             publishingDate,
             productImageUrl,
         } = this.props; // декомпозирование
-
         return(
             <tr>
                 <td>{id}</td>
@@ -33,10 +47,8 @@ class BookRow extends React.Component<Props, {}> {
                 <td>{publishingHouse}</td>
                 <td>{publishingDate}</td>
                 <td>
-                    <Card  style={{ width: this.imgSize }}>
-                        <Button variant="outline-light" >
-                            <Card.Img variant="top" src={productImageUrl} />
-                        </Button>
+                    <Card  style={{ width: this.props.imgSize}}>
+                        <Card.Img variant="top" src={productImageUrl} />
                     </Card>
                 </td>
             </tr>
