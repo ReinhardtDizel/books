@@ -3,7 +3,20 @@ import BookRow from "./BookRow";
 import Table from "react-bootstrap/Table";
 import {booksData} from "./BooksData";
 
-class BooksTable extends React.Component {
+interface Props {
+    id?: number;
+    title?: string;
+    authorName?: string;
+    publishingHouse?: string;
+    publishingDate?: string;
+    productImageUrl?: string;
+    imgSize?: string;
+}
+
+class BooksTable extends React.Component<Props, {}> {
+    constructor(props: Props) {
+        super(props);
+    }
     render() {
         const bookComponents = booksData.map((book)=> (
             <BookRow

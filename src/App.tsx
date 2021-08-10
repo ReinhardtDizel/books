@@ -10,10 +10,112 @@ interface Props {
     publishingDate?: string;
     productImageUrl?: string;
 }
+    interface State {
+        title?: string;
+        authorName?: string;
+        publishingHouse?: string;
+        publishingDate?: string;
+        productImageUrl?: string;
+    }
+
+class EditRow extends  React.Component<Props, State>{
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            title: '',
+            authorName: '',
+            publishingHouse: '',
+            publishingDate: '',
+            productImageUrl: ''
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+    handleInputChange(event:any) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        console.log(value + name);
+        this.setState({
+            [name]: value
+        });
+    }
+     render() {
+        return (
+            <Col className={'editContainer'} xs={4}>
+                <Table>
+                    <thead>
+                    <th><h6>Edit this</h6></th>
+                    </thead>
+                    <tbody>
+                    <tr><td>Title:</td></tr>
+                    <tr>
+                        <td>
+                            <input
+                                type="text"
+                                name="title"
+                                value={this.state.title}
+                                onChange={this.handleInputChange}
+                            />
+                        </td>
+                    </tr>
+                    <tr><td>Author:</td></tr>
+                    <tr>
+                        <td>
+                            <input
+                                type="text"
+                                name="authorName"
+                                value={this.state.authorName}
+                                onChange={this.handleInputChange}
+                            />
+                        </td>
+                    </tr>
+                    <tr><td>Publishing House:</td></tr>
+                    <tr>
+                        <td>
+                            <input
+                                type="text"
+                                name="publishingHouse"
+                                value={this.state.publishingHouse}
+                                onChange={this.handleInputChange}
+                            />
+                        </td>
+                    </tr>
+                    <tr><td>publishing Date:</td></tr>
+                    <tr>
+                        <td>
+                            <input
+                                type="text"
+                                name="publishingDate"
+                                value={this.state.publishingDate}
+                                onChange={this.handleInputChange}
+                            />
+                        </td>
+                    </tr>
+                    <tr><td>Image:</td></tr>
+                    <tr>
+                        <td>
+                            <input
+                                type="text"
+                                name="productImageUrl"
+                                value={this.state.productImageUrl}
+                                onChange={this.handleInputChange}
+                            />
+                        </td>
+                    </tr>
+                    </tbody>
+                </Table>
+            </Col>
+        )
+    }
+}
 
 class PageGrid extends React.Component<Props, {}> {
-  render(){
-      return(
+    constructor(props: Props) {
+        super(props);
+    }
+
+    render(){
+        return(
           <Container fluid>
               <Row>
                   <Col xs={8}>
@@ -26,35 +128,7 @@ class PageGrid extends React.Component<Props, {}> {
                           </tbody>
                       </Table>
                   </Col>
-                  <Col className={'editContainer'} xs={4}>
-                      <Table>
-                          <thead>
-                          <th>Edit this</th>
-                          </thead>
-                          <tbody>
-                              <tr>Title:</tr>
-                              <tr>
-                                  <input className="form-control" type="text" name="input" value=""></input>
-                              </tr>
-                              <tr>Author:</tr>
-                              <tr>
-                                  <input className="form-control" type="text" name="input" value=""></input>
-                              </tr>
-                              <tr>Publishing House:</tr>
-                              <tr>
-                                  <input className="form-control" type="text" name="input" value=""></input>
-                              </tr>
-                              <tr>publishing Date:</tr>
-                              <tr>
-                                  <input className="form-control" type="text" name="input" value=""></input>
-                              </tr>
-                              <tr>Image:</tr>
-                              <tr>
-                                  <input className="form-control" type="text" name="input" value=""></input>
-                              </tr>
-                          </tbody>
-                      </Table>
-                  </Col>
+                  <EditRow/>
               </Row>
           </Container>
       )
