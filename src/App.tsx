@@ -30,13 +30,10 @@ class EditRow extends  React.Component<Props, State>{
         };
         this.handleInputChange = this.handleInputChange.bind(this);
     }
-    handleInputChange(event:any) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        console.log(value + name);
+    private readonly handleInputChange = (event: any):void => { // по феншую
+        const { name, value } = event.target;
         this.setState({
-            [name]: value
+            [name]: value, // запятая по феншую
         });
     }
      render() {
@@ -113,7 +110,6 @@ class PageGrid extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
     }
-
     render(){
         return(
           <Container fluid>
