@@ -110,6 +110,9 @@ class PageGrid extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
     }
+    public openBookDetailsView = (): void => {
+        console.log('PageGrid Component');
+    }
     render(){
         return(
           <Container fluid>
@@ -120,7 +123,7 @@ class PageGrid extends React.Component<Props, {}> {
                           <th>Books List</th>
                           </thead>
                           <tbody>
-                              <BooksTable />
+                              <BooksTable handler={this.openBookDetailsView}/> // свойства компонента
                           </tbody>
                       </Table>
                   </Col>

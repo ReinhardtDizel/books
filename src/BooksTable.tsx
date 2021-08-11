@@ -11,6 +11,7 @@ interface Props {
     publishingDate?: string;
     productImageUrl?: string;
     imgSize?: string;
+    handler?: () => void; // магия typescript
 }
 
 class BooksTable extends React.Component<Props, {}> {
@@ -18,6 +19,7 @@ class BooksTable extends React.Component<Props, {}> {
         super(props);
     }
     render() {
+        const {handler} = this.props;
         const bookComponents = booksData.map((book)=> (
             <BookRow
                 id={book.id}
@@ -26,6 +28,7 @@ class BooksTable extends React.Component<Props, {}> {
                 publishingHouse={book.publishingHouse}
                 publishingDate={book.publishingDate}
                 productImageUrl={book.productImageUrl}
+                handler={handler}
             />
         ));
         return (
@@ -34,7 +37,7 @@ class BooksTable extends React.Component<Props, {}> {
                     <thead>
                     </thead>
                     <tbody>
-                    {bookComponents}
+                        {bookComponents}
                     </tbody>
                 </Table>
             </div>
