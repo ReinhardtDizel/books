@@ -46,3 +46,11 @@ code {
   margin-right: 0rem;
   margin-left: 0rem;
 }
+.abortBtn{
+  margin-left: 4rem;
+  padding: 1rem;
+}
+.saveBtn{
+  padding: 1rem;
+  margin-left: 0.5rem;
+}
