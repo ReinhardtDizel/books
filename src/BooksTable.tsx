@@ -11,7 +11,7 @@ interface Props {
     publishingDate?: string;
     productImageUrl?: string;
     imgSize?: string;
-    handler?: () => void; // магия typescript
+    handler?: (e:any) => void; // магия typescript
 }
 
 class BooksTable extends React.Component<Props, {}> {

@@ -32,7 +32,7 @@ export const booksData = [
         productImageUrl:'https://images-na.ssl-images-amazon.com/images/I/51gGgVnODsL._SX322_BO1,204,203,200_.jpg',
     },
     {
-        id: 4,
+        id: 5,
         title: 'Dark Roads: A Novel',
         authorName: 'Chevy Stevens',
         publishingHouse: 'St. Martin Press',
@@ -40,7 +40,7 @@ export const booksData = [
         productImageUrl:'https://images-na.ssl-images-amazon.com/images/I/51Zg02RRMGL._AC_SX184_.jpg',
     },
     {
-        id: 5,
+        id: 6,
         title: 'Once There Were Wolves',
         authorName: 'Charlotte McConaghy',
         publishingHouse: 'Flatiron Books',
@@ -48,7 +48,7 @@ export const booksData = [
         productImageUrl:'https://images-na.ssl-images-amazon.com/images/I/41V4TQpXGhL._AC_SX184_.jpg',
     },
     {
-        id: 6,
+        id: 7,
         title: 'If You Tell: A True Story of Murder, Family Secrets, and the Unbreakable Bond of Sisterhood',
         authorName: 'Gregg Olsen',
         publishingHouse: 'Thomas & Mercer',
@@ -56,7 +56,7 @@ export const booksData = [
         productImageUrl:'https://m.media-amazon.com/images/I/41nIJTI4vXL.jpg',
     },
     {
-        id: 7,
+        id: 8,
         title: 'Greenlights',
         authorName: 'Matthew McConaughey',
         publishingHouse: 'Random House Audio',
@@ -64,7 +64,7 @@ export const booksData = [
         productImageUrl:'https://m.media-amazon.com/images/I/51DZeZw7K0L.jpg',
     },
     {
-        id: 8,
+        id: 9,
         title: 'AMA Manual of Style',
         authorName: 'American Medical Association',
         publishingHouse: 'Journal of the American Medical Association',
@@ -72,7 +72,7 @@ export const booksData = [
         productImageUrl:'https://upload.wikimedia.org/wikipedia/en/thumb/c/cd/AMA_Manual_of_Style%2C_11ed.jpg/220px-AMA_Manual_of_Style%2C_11ed.jpg',
     },
     {
-        id: 9,
+        id: 10,
         title: 'Billy Summers',
         authorName: 'Stephen King',
         publishingHouse: 'Simon & Schuster Audio',
@@ -80,7 +80,7 @@ export const booksData = [
         productImageUrl:'https://m.media-amazon.com/images/I/61MkXxqcd6S.jpg',
     },
     {
-        id: 10,
+        id: 11,
         title: 'Nolyn: The Rise and Fall, Book 1',
         authorName: 'Michael J. Sullivan',
         publishingHouse: 'Юность',

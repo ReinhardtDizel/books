@@ -9,23 +9,19 @@ interface Props {
     publishingDate?: string;
     productImageUrl?: string;
     imgSize?: string;
-    handler?: () => void; // магия typescript
+    handler?: (e:any) => void; // магия typescript
+    selectedId?: number;
+}
+interface State{
+    selectedId?: any;
 }
 
-interface State {
-    id?: number;
-    title?: string;
-    authorName?: string;
-    publishingHouse?: string;
-    publishingDate?: string;
-    productImageUrl?: string;
-    isSelected?: boolean;
-}
-
-class BookRow extends React.Component<Props, State> {
+class BookRow extends React.Component<Props, State > {
     constructor(props: Props) {
-        super(props)
-        this.showBookDetailViewHandler = this.showBookDetailViewHandler.bind(this);
+        super(props);
+        this.state = {
+            selectedId: this.props.id
+        };
     }
     static defaultProps = {
         imgSize: '5rem',
@@ -40,7 +36,9 @@ class BookRow extends React.Component<Props, State> {
             productImageUrl,
         } = this.props; // декомпозирование
         return(
-            <tr onClick={this.showBookDetailViewHandler}>
+            <tr
+                onClick={()=>{this.showBookDetailViewHandler(this.state.selectedId)}}
+            >
                 <td>{id}</td>
                 <td>{title}</td>
                 <td>{authorName}</td>
@@ -54,12 +52,13 @@ class BookRow extends React.Component<Props, State> {
             </tr>
         )
     }
-    private readonly showBookDetailViewHandler = (event: any): void =>  {
+
+  showBookDetailViewHandler = (e:any): void =>  {
         const {handler} = this.props;
+        const _selectedId = this.state.selectedId;
         if (handler !== undefined && handler !== null) {
-            handler();
+            handler(_selectedId);
         }
-        // console.log('Нажатие на стрОку');
     }
 }
 export default BookRow;
