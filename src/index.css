@@ -40,17 +40,11 @@ code {
   background-color: #F6F7F4;
 }
 .btn{
+  margin-left: 4rem;
   border: none;
   padding-right: 0rem;
   padding-left: 0rem;
   margin-right: 0rem;
   margin-left: 0rem;
 }
-.abortBtn{
-  margin-left: 4rem;
-  padding: 1rem;
-}
-.saveBtn{
-  padding: 1rem;
-  margin-left: 0.5rem;
-}
+

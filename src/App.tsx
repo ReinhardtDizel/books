@@ -55,7 +55,6 @@ class PageGrid extends React.Component<Props, State> {
         });
     }
     render() {
-        console.log(this.state.title);
         return (
             <Container fluid>
                 <Row>
