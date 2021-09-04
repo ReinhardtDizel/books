@@ -1,7 +1,18 @@
 import React from "react";
-import {Container, Row, Col, Form} from "react-bootstrap";
+import {Container, Row, Col, Form, FormControl} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import {Button} from "react-bootstrap";
+import InputGroup from 'react-bootstrap/InputGroup'
+
+
+
+//=======================================================================
+const lbl_Title: string = "Title";
+const lbl_AuthorName: string = "Author Name";
+const lbl_PublishingHouse: string = "Publishing House";
+const lbl_PublishingDate: string = "Publishing Date";
+const lbl_ProductImageUrl: string = "Product Image Url";
+//=======================================================================
 
 interface Props {
     title?: string;
@@ -34,9 +45,11 @@ class EditRow extends  React.Component<Props, State>{
         this.handleInputChange = this.handleInputChange.bind(this);
         this.editButtonClicked = this.editButtonClicked.bind(this);
         this.CancelButtonClicked = this.CancelButtonClicked.bind(this);
+        this.SaveButtonClicked = this.SaveButtonClicked.bind(this);
     }
     handleInputChange = (event: any):void => { // по феншую
         const { name, value } = event.target;
+        console.log(name);
         this.setState({
             [name]: value, // запятая по феншую
         });
@@ -64,6 +77,11 @@ class EditRow extends  React.Component<Props, State>{
             });
         }
     }
+    //=======================SAVE===============================================
+    SaveButtonClicked = ():void => {
+        console.log(this.state.title)
+    }
+    //==========================================================================
 
     render() {
         const {
@@ -77,37 +95,36 @@ class EditRow extends  React.Component<Props, State>{
         if(!this.state.editBtnClicked){
             return(
             <Col className={'editContainer'} xs={4}>
-                <Table>
+                <Table striped borderless>
                     <thead>
-                    <th><h6>Edit this</h6></th>
+                    <tr></tr>
                     </thead>
                     <tbody>
-                    <tr><h6>Title:</h6></tr>
+                    <tr key={"Title"}></tr>
                     <tr>
                         <td>
                             {title}
                         </td>
                     </tr>
-                    <tr><h6>Author:</h6></tr>
+                    <tr key={"Author"}></tr>
                     <tr>
                         <td>
                             {authorName}
                         </td>
                     </tr>
-                    <tr><h6>Publishing House:</h6></tr>
+                    <tr key={"Publishing House"}></tr>
                     <tr>
                         <td>
                             {publishingHouse}
                         </td>
                     </tr>
-                    <tr><h6>Publishing Date:</h6></tr>
+                    <tr key={"Publishing Date"}></tr>
                     <tr>
                         <td>
                             {publishingDate}
                         </td>
                     </tr>
-                    <tr><h6>Image URL:</h6></tr>
-                    <tr>
+                    <tr key={"Image URL"}>
                         <td>
                             {productImageUrl}
                         </td>
@@ -116,6 +133,7 @@ class EditRow extends  React.Component<Props, State>{
                 </Table>
                 <td>
                     <Button
+                        onClick={this.SaveButtonClicked}
                         className='saveBtn'
                         size="sm"
                         variant="dark"
@@ -142,70 +160,91 @@ class EditRow extends  React.Component<Props, State>{
         else
         return (
             <Col className={'editContainer'} xs={4}>
-                <Table>
+                <Table striped borderless>
                     <thead>
-                    <th><h6>Edit this</h6></th>
+                    <tr></tr>
                     </thead>
                     <tbody>
-                    <tr><td>Title:</td></tr>
-                    <tr>
+                    <tr></tr>
+                    <tr key={"Title"}>
                         <td>
-                            <input
-                                type="text"
-                                name="title"
-                                value={this.state.title}
-                                onChange={this.handleInputChange}
-                            />
+                            <InputGroup size="sm" className="mb-0">
+                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_Title}</InputGroup.Text>
+                                <FormControl
+                                    value={this.state.title}
+                                    onChange={this.handleInputChange}
+                                    name="title"
+                                    aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default"
+                                />
+                            </InputGroup>
                         </td>
                     </tr>
-                    <tr><td>Author:</td></tr>
-                    <tr>
+                    <tr></tr>
+                    <tr key={"Author"}>
                         <td>
-                            <input
-                                type="text"
-                                name="authorName"
-                                value={this.state.authorName}
-                                onChange={this.handleInputChange}
-                            />
+                            <InputGroup size="sm" className="mb-1">
+                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_AuthorName}</InputGroup.Text>
+                                <FormControl
+                                    value={this.state.authorName}
+                                    onChange={this.handleInputChange}
+                                    name="authorName"
+                                    aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default"
+                                />
+                            </InputGroup>
                         </td>
                     </tr>
-                    <tr><td>Publishing House:</td></tr>
-                    <tr>
+                    <tr></tr>
+                    <tr key={"Publishing House"}>
                         <td>
-                            <input
-                                type="text"
-                                name="publishingHouse"
-                                value={this.state.publishingHouse}
-                                onChange={this.handleInputChange}
-                            />
+                            <InputGroup size="sm" className="mb-2">
+                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_PublishingHouse}</InputGroup.Text>
+                                <FormControl
+                                    value={this.state.publishingHouse}
+                                    onChange={this.handleInputChange}
+                                    name="publishingHouse"
+                                    aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default"
+                                />
+                            </InputGroup>
                         </td>
                     </tr>
-                    <tr><td>Publishing Date:</td></tr>
-                    <tr>
+                    <tr></tr>
+                    <tr key={"Publishing Date"}>
                         <td>
-                            <input
-                                type="text"
-                                name="publishingDate"
-                                value={this.state.publishingDate}
-                                onChange={this.handleInputChange}
-                            />
+                            <InputGroup size="sm" className="mb-3">
+                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_PublishingDate}</InputGroup.Text>
+                                <FormControl
+                                    value={this.state.publishingDate}
+                                    onChange={this.handleInputChange}
+                                    name="publishingDate"
+                                    aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default"
+                                />
+                            </InputGroup>
                         </td>
                     </tr>
-                    <tr><td>Image:</td></tr>
-                    <tr>
+                    <tr></tr>
+                    <tr key={"Image URL"}>
                         <td>
-                            <input
-                                type="text"
-                                name="productImageUrl"
-                                value={this.state.productImageUrl}
-                                onChange={this.handleInputChange}
-                            />
+                            <InputGroup size="sm" className="mb-4">
+                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_ProductImageUrl}</InputGroup.Text>
+                                <FormControl
+                                    value={this.state.productImageUrl}
+                                    onChange={this.handleInputChange}
+                                    name="productImageUrl"
+                                    aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default"
+                                />
+                            </InputGroup>
                         </td>
                     </tr>
                     </tbody>
                 </Table>
                 <td>
                     <Button
+                        onClick={this.SaveButtonClicked}
                         className='saveBtn'
                         size="sm"
                         variant="dark"
