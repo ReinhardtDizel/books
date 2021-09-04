@@ -1,9 +1,10 @@
 import React from "react";
-import {Container, Row, Col, Form} from "react-bootstrap";
+import {Container, Row, Col} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import BooksTable from "./BooksTable";
-import {booksData} from "./BooksData";
 import EditRow from "./EditRow";
+import {BookEntity} from "./Entities";
+import API, {booksDataURL} from "./API";
 
 interface Props {
     title?: string;
@@ -12,14 +13,14 @@ interface Props {
     publishingDate?: string;
     productImageUrl?: string;
 }
-    interface State {
-        title?: string;
-        authorName?: string;
-        publishingHouse?: string;
-        publishingDate?: string;
-        productImageUrl?: string;
-        selectedId?: any;
-    }
+interface State {
+    title?: string;
+    authorName?: string;
+    publishingHouse?: string;
+    publishingDate?: string;
+    productImageUrl?: string;
+    selectedId?: any;
+}
 
 class PageGrid extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -34,16 +35,16 @@ class PageGrid extends React.Component<Props, State> {
         };
     }
 
-    findSelectedRow =(event:any): any => {
-        const _find = booksData.find(e => e.id === event);
+   findSelectedRow =(event:any): any => {
+        /*const _find = Books.find(e => e.id === event);
         if (_find !== undefined && _find !== null) {
             return _find;
-        }
+        }*/
     }
     selectedToInput = ():void => { // по феншую
     }
     openBookDetailsView = (event:any): void => {
-        console.log('PageGrid Component');
+
         const _find = this.findSelectedRow(event);
         this.setState({
             selectedId:event,
@@ -54,6 +55,7 @@ class PageGrid extends React.Component<Props, State> {
             productImageUrl: _find.productImageUrl,
         });
     }
+
     render() {
         return (
             <Container fluid>
@@ -61,13 +63,11 @@ class PageGrid extends React.Component<Props, State> {
                     <Col xs={8}>
                         <Table striped bordered hover>
                             <thead>
-                            <th>Books List</th>
+                            <tr></tr>
                             </thead>
-                            <tbody>
                             <BooksTable
-                                handler={this.openBookDetailsView}
+                               handler={this.openBookDetailsView}
                             />
-                            </tbody>
                         </Table>
                     </Col>
                     <EditRow

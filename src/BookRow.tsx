@@ -2,7 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 
 interface Props {
-    id?: number;
+    id?: string;
     title?: string;
     authorName?: string;
     publishingHouse?: string;
