@@ -20,6 +20,7 @@ interface State {
     publishingDate?: string;
     productImageUrl?: string;
     selectedId?: any;
+    booksArray?: BookEntity[] | null;
 }
 
 class PageGrid extends React.Component<Props, State> {
@@ -31,18 +32,29 @@ class PageGrid extends React.Component<Props, State> {
             authorName: '',
             publishingHouse: '',
             publishingDate: '',
-            productImageUrl: ''
+            productImageUrl: '',
+            booksArray: [] as BookEntity[],
         };
     }
 
    findSelectedRow =(event:any): any => {
-        /*const _find = Books.find(e => e.id === event);
-        if (_find !== undefined && _find !== null) {
-            return _find;
-        }*/
+       let tempBooksArray  = this.state.booksArray;
+       let _find: BookEntity | undefined;
+       if(tempBooksArray!== undefined && tempBooksArray !== null) {
+           _find = tempBooksArray.find(e => e.id === event);
+           if (_find !== undefined && _find !== null) {
+               return _find;
+           }
+           else
+               return undefined;
+       }
+       else
+           return undefined;
     }
+
     selectedToInput = ():void => { // по феншую
     }
+
     openBookDetailsView = (event:any): void => {
 
         const _find = this.findSelectedRow(event);
@@ -56,6 +68,15 @@ class PageGrid extends React.Component<Props, State> {
         });
     }
 
+    async componentWillMount() {
+        const {data}:any = await API.get(booksDataURL);
+        if (data !== null && data !== undefined) {
+            this.setState({
+                booksArray: data as BookEntity[],
+            });
+        }
+    }
+
     render() {
         return (
             <Container fluid>
@@ -66,7 +87,8 @@ class PageGrid extends React.Component<Props, State> {
                             <tr></tr>
                             </thead>
                             <BooksTable
-                               handler={this.openBookDetailsView}
+                                booksArray={this.state.booksArray}
+                                handler={this.openBookDetailsView}
                             />
                         </Table>
                     </Col>
