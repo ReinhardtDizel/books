@@ -4,9 +4,11 @@ import Table from "react-bootstrap/Table";
 import BooksTable from "./BooksTable";
 import EditRow from "./EditRow";
 import {BookEntity} from "./Entities";
-import API, {booksDataURL} from "./API";
+import API, {booksDataURL, queryGet, queryPut} from "./API";
+import Popup from "./PopupComponent";
 
 interface Props {
+    id?:string;
     title?: string;
     authorName?: string;
     publishingHouse?: string;
@@ -14,27 +16,31 @@ interface Props {
     productImageUrl?: string;
 }
 interface State {
+    id?:string;
     title?: string;
     authorName?: string;
     publishingHouse?: string;
     publishingDate?: string;
     productImageUrl?: string;
-    selectedId?: any;
     booksArray?: BookEntity[] | null;
+    showPopUp: boolean;
 }
 
 class PageGrid extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            selectedId: null,
+            id: '',
             title: '',
             authorName: '',
             publishingHouse: '',
             publishingDate: '',
             productImageUrl: '',
             booksArray: [] as BookEntity[],
+            showPopUp: false,
         };
+
+
     }
 
    findSelectedRow =(event:any): any => {
@@ -55,11 +61,50 @@ class PageGrid extends React.Component<Props, State> {
     selectedToInput = ():void => { // по феншую
     }
 
-    openBookDetailsView = (event:any): void => {
+    updateBooksArray = ():void => {
+        queryGet().then(res => {
+            if (res!== null && res !== undefined) {
+                this.setState({
+                    booksArray: res.data,
+                });
+            }
+        } );
+    }
 
+    updateAppData = (): void => {
+        const id = this.state.id;
+        this.openBookDetailsView(id);
+    }
+
+    showPopUp = (e:boolean):void => { // по феншую
+        this.setState({
+            showPopUp: e,
+        });
+        this.updateBooksArray();
+        this.updateAppData();
+    }
+
+
+    saveBtnHandler  = (e:any, row:BookEntity):void => { // по феншую
+        const id = this.state.id;
+        const saveClicked = e;
+
+          if(id !== undefined && saveClicked) {
+              queryPut(id, row).then(res => {
+                  if( res.status == 200) {
+                      this.setState({
+                          showPopUp: true,
+                      });
+                  }
+          } );
+
+        }
+    }
+
+    openBookDetailsView = (event:any): void => {
         const _find = this.findSelectedRow(event);
         this.setState({
-            selectedId:event,
+            id:_find.id,
             title: _find.title,
             authorName: _find.authorName,
             publishingHouse: _find.publishingHouse,
@@ -68,18 +113,21 @@ class PageGrid extends React.Component<Props, State> {
         });
     }
 
-    async componentWillMount() {
-        const {data}:any = await API.get(booksDataURL);
-        if (data !== null && data !== undefined) {
-            this.setState({
-                booksArray: data as BookEntity[],
-            });
-        }
+    componentWillMount() {
+        this.updateBooksArray();
     }
 
     render() {
         return (
             <Container fluid>
+
+                <Popup
+                    showPopUp={this.state.showPopUp}
+                    setShow={this.showPopUp}
+                >
+
+                </Popup>
+
                 <Row>
                     <Col xs={8}>
                         <Table striped bordered hover>
@@ -93,6 +141,7 @@ class PageGrid extends React.Component<Props, State> {
                         </Table>
                     </Col>
                     <EditRow
+                        saveBtnHandler={this.saveBtnHandler}
                         handler={this.selectedToInput}
                         title={this.state.title}
                         authorName={this.state.authorName}
