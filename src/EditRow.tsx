@@ -3,6 +3,7 @@ import {Container, Row, Col, Form, FormControl} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import {Button} from "react-bootstrap";
 import InputGroup from 'react-bootstrap/InputGroup'
+import {BookEntity} from "./Entities";
 
 
 
@@ -20,7 +21,9 @@ interface Props {
     publishingHouse?: string;
     publishingDate?: string;
     productImageUrl?: string;
+    saveBtnClicked?: boolean;
     handler?: () => void; // магия typescript
+    saveBtnHandler?: (e:any,d:BookEntity) => void;
 }
 interface State {
     title?: string;
@@ -29,12 +32,14 @@ interface State {
     publishingDate?: string;
     productImageUrl?: string;
     editBtnClicked?: boolean;
+    saveBtnClicked?: boolean;
 }
 
 class EditRow extends  React.Component<Props, State>{
     constructor(props: Props) {
         super(props);
         this.state = {
+            saveBtnClicked: false,
             editBtnClicked: false,
             title: '',
             authorName: '',
@@ -45,11 +50,10 @@ class EditRow extends  React.Component<Props, State>{
         this.handleInputChange = this.handleInputChange.bind(this);
         this.editButtonClicked = this.editButtonClicked.bind(this);
         this.CancelButtonClicked = this.CancelButtonClicked.bind(this);
-        this.SaveButtonClicked = this.SaveButtonClicked.bind(this);
+        this.saveBtnHandler = this.saveBtnHandler.bind(this);
     }
     handleInputChange = (event: any):void => { // по феншую
         const { name, value } = event.target;
-        console.log(name);
         this.setState({
             [name]: value, // запятая по феншую
         });
@@ -60,6 +64,7 @@ class EditRow extends  React.Component<Props, State>{
         if (value !== undefined && value !== null && !_clicked) {
             this.setState({
                 editBtnClicked: true,
+                saveBtnClicked: false,
                 title: value.title,
                 authorName: value.authorName,
                 publishingHouse: value.publishingHouse,
@@ -74,12 +79,44 @@ class EditRow extends  React.Component<Props, State>{
         if (handler !== undefined && handler !== null && _clicked) {
             this.setState({
                 editBtnClicked: false,
+                saveBtnClicked: false,
             });
         }
     }
     //=======================SAVE===============================================
-    SaveButtonClicked = ():void => {
-        console.log(this.state.title)
+    saveBtnHandler = (e:any):void => {
+        const {saveBtnHandler} = this.props;
+
+        let sendEntity: BookEntity = {
+            title: this.state.title,
+            authorName: this.state.authorName,
+            publishingHouse: this.state.publishingHouse,
+            publishingDate: this.state.publishingDate,
+            productImageUrl: this.state.productImageUrl
+        }
+        let noEntity: BookEntity = {
+            title: "",
+            authorName: "",
+            publishingHouse: "",
+            publishingDate: "",
+            productImageUrl: ""
+        }
+
+        if ( saveBtnHandler !== undefined && saveBtnHandler !== null ) {
+            if(!e) {
+                saveBtnHandler(true, sendEntity);
+                this.setState({
+                    saveBtnClicked: true,
+                });
+            }
+            else if (e) {
+                saveBtnHandler(false, noEntity);
+                this.setState({
+                    saveBtnClicked: false,
+                });
+            }
+        }
+
     }
     //==========================================================================
 
@@ -92,7 +129,7 @@ class EditRow extends  React.Component<Props, State>{
             productImageUrl,
         } = this.props; // декомпозирование
 
-        if(!this.state.editBtnClicked){
+        if(!this.state.editBtnClicked && !this.state.saveBtnClicked){
             return(
             <Col className={'editContainer'} xs={4}>
                 <Table striped borderless>
@@ -132,13 +169,6 @@ class EditRow extends  React.Component<Props, State>{
                     </tbody>
                 </Table>
                 <td>
-                    <Button
-                        onClick={this.SaveButtonClicked}
-                        className='saveBtn'
-                        size="sm"
-                        variant="dark"
-                    >Save
-                    </Button>{' '}
                     <Button
                         onClick={this.editButtonClicked}
                         className='EditBtn'
@@ -244,18 +274,11 @@ class EditRow extends  React.Component<Props, State>{
                 </Table>
                 <td>
                     <Button
-                        onClick={this.SaveButtonClicked}
+                        onClick={()=>{this.saveBtnHandler(this.state.saveBtnClicked)}}
                         className='saveBtn'
                         size="sm"
                         variant="dark"
                     >Save
-                    </Button>{' '}
-                    <Button
-                        onClick={this.editButtonClicked}
-                        className='EditBtn'
-                        size="sm"
-                        variant="dark"
-                    >Edit
                     </Button>{' '}
                     <Button
                         onClick={this.CancelButtonClicked}

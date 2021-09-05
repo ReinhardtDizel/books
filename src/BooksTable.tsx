@@ -14,35 +14,30 @@ interface Props {
     productImageUrl?: string;
     imgSize?: string;
     handler?: (e:any) => void; // магия typescript
+    booksArray?: BookEntity[] | null;
 }
 
 interface State {
-    bookComponent?: BookEntity[] | null;
+    bookComponent?: BookEntity[] | null;//Not Used
 }
 
 class BooksTable extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            bookComponent: [] as BookEntity[],
+            bookComponent: [] as BookEntity[],//Not Used
         }
     }
 
     async componentWillMount() {
 //=============================================================================
-       const {data}:any = await API.get(booksDataURL);
-        if (data !== null && data !== undefined) {
-            this.setState({
-                bookComponent: data as BookEntity[],
-            });
-        }
+
 //=============================================================================
     }
     render() {
-        const { handler } = this.props;
-        const { bookComponent } = this.state;
-        const _bookComponents = (bookComponent !== null && bookComponent !== undefined)
-            ? bookComponent.map((book) => {
+        const { handler,booksArray } = this.props;
+        const _bookComponents = (booksArray !== null && booksArray !== undefined)
+            ? booksArray.map((book) => {
                 return <BookRow
                     key={ book.id + '_10' }
                     id={ book.id }
