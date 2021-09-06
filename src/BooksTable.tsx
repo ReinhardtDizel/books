@@ -1,9 +1,6 @@
-import React, {FunctionComponent, useEffect} from "react";
+import React from "react";
 import BookRow from "./BookRow";
-
-import API, {booksDataURL} from "./API";
 import {BookEntity} from "./Entities";
-import axios from "axios";
 
 interface Props {
     id?: string;
@@ -19,6 +16,7 @@ interface Props {
 
 interface State {
     bookComponent?: BookEntity[] | null;//Not Used
+    selectedId?: string;
 }
 
 class BooksTable extends React.Component<Props, State> {
@@ -29,13 +27,23 @@ class BooksTable extends React.Component<Props, State> {
         }
     }
 
+    handler = (event:any):void => {
+        const {handler} = this.props;
+        if (handler !== undefined && handler !== null) {
+            handler(event);
+        }
+        this.setState({
+            selectedId: event,
+        });
+    }
+
     async componentWillMount() {
 //=============================================================================
 
 //=============================================================================
     }
     render() {
-        const { handler,booksArray } = this.props;
+        const { booksArray } = this.props;
         const _bookComponents = (booksArray !== null && booksArray !== undefined)
             ? booksArray.map((book) => {
                 return <BookRow
@@ -46,7 +54,7 @@ class BooksTable extends React.Component<Props, State> {
                     publishingHouse={ book.publishingHouse }
                     publishingDate={ book.publishingDate }
                     productImageUrl={ book.productImageUrl }
-                    handler={ handler }
+                    handler={ this.handler }
                 />
             })
             : null;
