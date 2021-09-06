@@ -57,38 +57,41 @@ class PageGrid extends React.Component<Props, State> {
        else
            return undefined;
     }
-
+    //=======================================================================
     selectedToInput = ():void => { // по феншую
     }
-
-    updateBooksArray = ():void => {
+    //=======================================================================
+    updateBooksArray(e:boolean) {
         queryGet().then(res => {
             if (res!== null && res !== undefined) {
                 this.setState({
                     booksArray: res.data,
                 });
+                if(e){
+                    const id = this.state.id;
+                    const _find: BookEntity = res.data.find( (r: { id: string | undefined; }) => r.id === id );
+                    this.setState({
+                        title: _find.title,
+                        authorName: _find.authorName,
+                        publishingHouse: _find.publishingHouse,
+                        publishingDate: _find.publishingDate,
+                        productImageUrl: _find.productImageUrl,
+                    });
+                }
             }
         } );
-    }
-
-    updateAppData = (): void => {
-        const id = this.state.id;
-        this.openBookDetailsView(id);
     }
 
     showPopUp = (e:boolean):void => { // по феншую
         this.setState({
             showPopUp: e,
         });
-        this.updateBooksArray();
-        this.updateAppData();
+       this.updateBooksArray(true);
     }
-
 
     saveBtnHandler  = (e:any, row:BookEntity):void => { // по феншую
         const id = this.state.id;
         const saveClicked = e;
-
           if(id !== undefined && saveClicked) {
               queryPut(id, row).then(res => {
                   if( res.status == 200) {
@@ -114,7 +117,7 @@ class PageGrid extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this.updateBooksArray();
+        this.updateBooksArray(false);
     }
 
     render() {

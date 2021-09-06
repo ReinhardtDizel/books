@@ -23,6 +23,7 @@ interface Props {
     productImageUrl?: string;
     saveBtnClicked?: boolean;
     handler?: () => void; // магия typescript
+    SaveOnClick?: (e:any) => void;
     saveBtnHandler?: (e:any,d:BookEntity) => void;
 }
 interface State {
@@ -52,6 +53,9 @@ class EditRow extends  React.Component<Props, State>{
         this.CancelButtonClicked = this.CancelButtonClicked.bind(this);
         this.saveBtnHandler = this.saveBtnHandler.bind(this);
     }
+    //=================================================================================
+
+    //=================================================================================
     handleInputChange = (event: any):void => { // по феншую
         const { name, value } = event.target;
         this.setState({
@@ -77,11 +81,14 @@ class EditRow extends  React.Component<Props, State>{
         const {handler} = this.props;
         const _clicked = this.state.editBtnClicked;
         if (handler !== undefined && handler !== null && _clicked) {
-            this.setState({
-                editBtnClicked: false,
-                saveBtnClicked: false,
-            });
+            this.hideInput();
         }
+    }
+    hideInput = (): void  => {
+        this.setState({
+            editBtnClicked: false,
+            saveBtnClicked: false,
+        });
     }
     //=======================SAVE===============================================
     saveBtnHandler = (e:any):void => {
@@ -116,7 +123,7 @@ class EditRow extends  React.Component<Props, State>{
                 });
             }
         }
-
+        this.hideInput();
     }
     //==========================================================================
 
