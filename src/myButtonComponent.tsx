@@ -3,39 +3,79 @@ import {Button} from "react-bootstrap";
 
 interface State {
     saveBtnClicked: boolean;
+    isLoading: boolean;
 }
 interface Props {
     SaveOnClick?: (e:any) => void;
 }
 
-class myButtonComponent extends React.Component<Props, State> {
+class ISaveButton extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            isLoading:false,
             saveBtnClicked: false,
         };
         this.saveBtnHandler = this.saveBtnHandler.bind(this);
     }
 
+    simulateNetworkRequest() {
+        return new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+    setLoading = (e:boolean):void => {
+        this.setState({
+            isLoading: e,
+        });
+    }
+    setClicked = (e:boolean):void => {
+        console.log("set")
+        this.setState({
+            saveBtnClicked: e,
+        });
+    }
+
+
     saveBtnHandler = (e:any):void => {
+
+        this.setClicked(true);
+
+
+
         const {SaveOnClick} = this.props;
-        const _saveBtnClicked = this.state.saveBtnClicked;
-        if (SaveOnClick !== undefined && SaveOnClick !== null) {
-            SaveOnClick(_saveBtnClicked);
+        if(SaveOnClick) {
+            const _saveBtnClicked = this.state.saveBtnClicked;
+
+            console.log(_saveBtnClicked)
+
+            if (SaveOnClick !== undefined && SaveOnClick !== null) {
+                SaveOnClick(true);
+            }
+            this.setLoading(true);
+            this.simulateNetworkRequest().then(() => {
+                this.setLoading(false);
+            });
         }
+
+    }
+
+    componentWillMount() {
+        console.log("will")
+        this.setClicked(false);
+        this.setLoading(false);
     }
 
     render() {
         return (
             <Button
+                disabled={this.state.isLoading}
                 onClick={()=>{this.saveBtnHandler(this.state.saveBtnClicked)}}
                 className='saveBtn'
                 size="sm"
                 variant="dark"
-            >Save
+            >{this.state.isLoading ? 'Loading…' : 'Save'}
             </Button>
         )
     }
 }
 
-export default myButtonComponent;
+export default ISaveButton;
