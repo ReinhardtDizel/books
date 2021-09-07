@@ -59,6 +59,7 @@ class PageGrid extends React.Component<Props, State> {
     }
     //=======================================================================
     selectedToInput = ():void => { // по феншую
+        console.log("event")
     }
     //=======================================================================
     updateBooksArray(e:boolean) {
@@ -89,10 +90,9 @@ class PageGrid extends React.Component<Props, State> {
        this.updateBooksArray(true);
     }
 
-    saveBtnHandler  = (e:any, row:BookEntity):void => { // по феншую
+    saveBtnHandler  = (row:BookEntity):void => { // по феншую
         const id = this.state.id;
-        const saveClicked = e;
-          if(id !== undefined && saveClicked) {
+          if(id !== undefined) {
               queryPut(id, row).then(res => {
                   if( res.status == 200) {
                       this.setState({
