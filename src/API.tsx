@@ -18,16 +18,14 @@ export const queryGet = async () => {
 
 export const queryPut = async (id:string, postData:any) => {
     const data = await axios.put(booksDataURL + id, postData);
+    const wait = await simulateNetworkRequest()
+        .then(() => {
+        });
     return data;
 }
-
-
-
-
-
-
-
-
+export const simulateNetworkRequest = ():any => {
+    return new Promise((resolve) => setTimeout(resolve, 2000));
+}
 
 
 
