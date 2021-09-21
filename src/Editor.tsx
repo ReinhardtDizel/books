@@ -12,48 +12,48 @@ import ISaveButton from "./myButtonComponent";
 const lbl_Title: string = "Title";
 const lbl_AuthorName: string = "Author Name";
 const lbl_PublishingHouse: string = "Publishing House";
-const lbl_PublishingDate: string = "Publishing Date";
-const lbl_ProductImageUrl: string = "Product Image Url";
+const lbl_Publishing: string = "Publishing Date";
+const lbl_Image: string = "Book Image";
 //=======================================================================
 
 interface Props {
     title?: string;
     authors?: Author[];
-    publishingDate?: Date;
-    imageSource?: string;
-    saveBtnClicked?: boolean;
+    publishing?: Date;
+    image?: string;
+    saveButtonClicked?: boolean;
     handler?: () => void; // магия typescript
     SaveOnClick?: (e:boolean) => void;
-    saveBtnHandler?: (e:Book) => void;
-    dataSaved: boolean;
+    saveButtonHandler?: (e:Book) => void;
+    saved: boolean;
     isLoading: boolean;
     showInput?: boolean;
 }
 interface State {
     title?: string;
     authors?: Author[];
-    publishingDate?: Date;
-    imageSource?: string;
-    editBtnClicked?: boolean;
-    dataSaved?: boolean;
+    publishing?: Date;
+    image?: string;
+    editButtonClicked?: boolean;
+    saved?: boolean;
 }
 
-class EditRow extends  React.Component<Props, State>{
+class Editor extends  React.Component<Props, State>{
     constructor(props: Props) {
         super(props);
         this.state = {
-            dataSaved: this.props.dataSaved,
-            editBtnClicked: false,
+            saved: this.props.saved,
+            editButtonClicked: false,
             title: '',
             authors: [] as Author[],
-            publishingDate: undefined,
-            imageSource: '',
+            publishing: undefined,
+            image: '',
 
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.editButtonClicked = this.editButtonClicked.bind(this);
         this.CancelButtonClicked = this.CancelButtonClicked.bind(this);
-        this.saveBtnHandler = this.saveBtnHandler.bind(this);
+        this.saveButtonHandler = this.saveButtonHandler.bind(this);
     }
     //=================================================================================
 
@@ -68,63 +68,62 @@ class EditRow extends  React.Component<Props, State>{
     }
     editButtonClicked= (): void =>  {
         const value = this.props;
-        const _clicked = this.state.editBtnClicked;
+        const _clicked = this.state.editButtonClicked;
         if (value !== undefined && value !== null && !_clicked) {
             this.setState({
-                editBtnClicked: true,
+                editButtonClicked: true,
                 title: value.title,
                 authors: value.authors,
-                publishingDate: value.publishingDate,
-                imageSource: value.imageSource,
+                publishing: value.publishing,
+                image: value.image,
             });
         }
     }
    CancelButtonClicked= (): void =>  {
-        const _clicked = this.state.editBtnClicked;
+        const _clicked = this.state.editButtonClicked;
         if (_clicked) {
             this.hideInput();
         }
     }
     hideInput = (): void  => {
         this.setState({
-            editBtnClicked: false,
+            editButtonClicked: false,
         });
     }
-    //=======================SAVE===============================================
-    saveBtnHandler = (e:any):void => {
-        const {saveBtnHandler, dataSaved} = this.props;
+    saveButtonHandler = (e:any):void => {
+        const {saveButtonHandler, saved} = this.props;
+        const {title,publishing,image} = this.state;
 
-        let sendEntity: Book = {
-            title: this.state.title,
-            publishingDate: this.state.publishingDate,
-            imageSource: this.state.imageSource
+        let book: Book = {
+            title: title,
+            publishing: publishing,
+            image: image
         }
-        if ( saveBtnHandler !== undefined && saveBtnHandler !== null ) {
-            saveBtnHandler(sendEntity);
+        if ( saveButtonHandler !== undefined && saveButtonHandler !== null ) {
+            saveButtonHandler(book);
         }
     }
-
 
     render() {
         const {
             title,
-            publishingDate,
-            imageSource,
+            publishing,
+            image,
         } = this.props; // декомпозирование
+        const {editButtonClicked,} = this.state;
 
-        if(!this.state.editBtnClicked){
+        if(!editButtonClicked){
             return(
-                this.RenderBookDetail( title,publishingDate,imageSource )
+                this.RenderBookDetail( title,publishing,image )
             )
         }
         else
             return (
-                this.RenderInput(this.props.dataSaved,this.props.isLoading)
+                this.RenderInput(this.props.saved,this.props.isLoading)
             )
-
     }
-    //==========================================================================
-    RenderBookDetail = (title?: string, publishingDate?: Date, productImageUrl?: string):any => {
+
+    RenderBookDetail = (title?: string, publishing?: Date, image?: string):any => {
         return (
             <Col className={'editContainer'} xs={4}>
                 <Table striped borderless>
@@ -147,12 +146,12 @@ class EditRow extends  React.Component<Props, State>{
                     <tr key={"Publishing Date"}></tr>
                     <tr>
                         <td>
-                            {publishingDate}
+                            {publishing}
                         </td>
                     </tr>
                     <tr key={"Image URL"}>
                         <td>
-                            {productImageUrl}
+                            {image}
                         </td>
                     </tr>
                     </tbody>
@@ -178,6 +177,13 @@ class EditRow extends  React.Component<Props, State>{
     }
 
     RenderInput = (e:boolean, b:boolean):any => {
+
+        const {
+            title,
+            publishing,
+            image
+        } = this.state;
+
         return(
             <Col className={'editContainer'} xs={4}>
                 <Table striped borderless>
@@ -191,7 +197,7 @@ class EditRow extends  React.Component<Props, State>{
                             <InputGroup size="sm" className="mb-0">
                                 <InputGroup.Text id="inputGroup-sizing-default">{lbl_Title}</InputGroup.Text>
                                 <FormControl
-                                    value={this.state.title}
+                                    value={title}
                                     onChange={this.handleInputChange}
                                     name="title"
                                     aria-label="Default"
@@ -219,9 +225,9 @@ class EditRow extends  React.Component<Props, State>{
                     <tr key={"Publishing Date"}>
                         <td>
                             <InputGroup size="sm" className="mb-3">
-                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_PublishingDate}</InputGroup.Text>
+                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_Publishing}</InputGroup.Text>
                                 <FormControl
-                                    value={this.state.publishingDate?.toString()}
+                                    value={publishing?.toString()}
                                     onChange={this.handleInputChange}
                                     name="publishingDate"
                                     aria-label="Default"
@@ -234,11 +240,11 @@ class EditRow extends  React.Component<Props, State>{
                     <tr key={"Image URL"}>
                         <td>
                             <InputGroup size="sm" className="mb-4">
-                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_ProductImageUrl}</InputGroup.Text>
+                                <InputGroup.Text id="inputGroup-sizing-default">{lbl_Image}</InputGroup.Text>
                                 <FormControl
-                                    value={this.state.imageSource}
+                                    value={image}
                                     onChange={this.handleInputChange}
-                                    name="productImageUrl"
+                                    name="image"
                                     aria-label="Default"
                                     aria-describedby="inputGroup-sizing-default"
                                 />
@@ -250,8 +256,8 @@ class EditRow extends  React.Component<Props, State>{
                 <td>
                     <ISaveButton
                         isLoading={b}
-                        dataSaved={e}
-                        SaveOnClick = {this.saveBtnHandler}
+                        saved={e}
+                        saveOnClick= {this.saveButtonHandler}
                     />
                     <Button
                         onClick={this.CancelButtonClicked}
@@ -264,17 +270,5 @@ class EditRow extends  React.Component<Props, State>{
             </Col>
         )
     }
-    //==========================================================================
 }
-
-
-
-export default EditRow;
-/*<Button
-onClick={()=>{this.saveBtnHandler(this.state.saveBtnClicked)}}
-className='saveBtn'
-size="sm"
-variant="dark"
->Save
-</Button>{' '}
-*/
+export default Editor;

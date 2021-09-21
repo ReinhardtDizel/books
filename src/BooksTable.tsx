@@ -7,15 +7,15 @@ interface Props {
     id?: string;
     title?: string;
     authors?: Author[];
-    publishingDate?: Date;
-    imageSource?: string;
+    publishing?: Date;
+    image?: string;
     imgSize?: string;
     handler?: (e:any) => void; // магия typescript
-    booksArray?: Book[] | null;
+    books?: Book[] | null;
 }
 
 interface State {
-    bookComponent?: Book[] | null; // Not Used
+    book?: Book[] | null; // Not Used
     selectedId?: string;
 }
 
@@ -23,7 +23,7 @@ class BooksTable extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            bookComponent: [] as Book[], // Not Used
+            book: [] as Book[], // Not Used
         }
     }
 
@@ -38,19 +38,19 @@ class BooksTable extends React.Component<Props, State> {
     }
 
     render() {
-        const { booksArray } = this.props;
+        const { books } = this.props;
         return <Row xs={1} md={2} className="g-4">
             {
-                (booksArray !== null && booksArray !== undefined)
-                    ? booksArray.map(
+                (books !== null && books !== undefined)
+                    ? books.map(
                         (book) => {
                             return(
                             <BookRow
-                                key={ book.id + '_10' }
+                                key={ book.id }
                                 id={ book.id }
                                 title={ book.title }
-                                publishingDate={ book.publishingDate }
-                                imageSource={ book.imageSource }
+                                publishing={ book.publishing }
+                                image={ book.image }
                                 handler={ this.handler }
                             />
                             )
@@ -58,29 +58,6 @@ class BooksTable extends React.Component<Props, State> {
                         ):null
             }
         </Row>
-        /*const { booksArray } = this.props;
-        const _bookComponents = (booksArray !== null && booksArray !== undefined)
-            ? booksArray.map((book) => {
-                return (
-                <BookRow
-                    key={ book.id + '_10' }
-                    id={ book.id }
-                    title={ book.title }
-                    authorName={ book.authorName }
-                    publishingHouse={ book.publishingHouse }
-                    publishingDate={ book.publishingDate }
-                    productImageUrl={ book.productImageUrl }
-                    handler={ this.handler }
-                />
-                )
-            })
-            : null;
-        return (
-            <tbody>
-                { _bookComponents }
-            </tbody>
-        )
-         */
     }
 }
 export default BooksTable;

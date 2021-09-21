@@ -8,8 +8,8 @@ interface Props {
     id?: string;
     title?: string;
     authors?: Author[];
-    publishingDate?: Date;
-    imageSource?: string;
+    publishing?: Date;
+    image?: string;
     imgSize?: string;
     handler?: (e:any) => void; // магия typescript
     selectedId?: number;
@@ -32,15 +32,16 @@ class BookRow extends React.Component<Props, State > {
         const {
             id,
             title,
-            publishingDate,
-            imageSource,
+            publishing,
+            image,
+            imgSize,
         } = this.props; // декомпозирование
         return(
             <Col sm ='auto'
                  onClick={()=>{this.showBookDetailViewHandler(this.state.selectedId)}}
             >
-                <Card style={{ width: this.props.imgSize}} className = "box">
-                    <Card.Img variant="top" src={imageSource} />
+                <Card style={{ width: imgSize}} className = "box">
+                    <Card.Img variant="top" src={image} />
                     <Card.Body>
                         <Card.Title>{title}</Card.Title>
                         <Card.Text>
@@ -54,7 +55,7 @@ class BookRow extends React.Component<Props, State > {
                         </ListGroupItem>
                         <ListGroupItem action href="#link3" disabled
                         >
-                            {publishingDate}
+                            {publishing}
                         </ListGroupItem>
                     </ListGroup>
                 </Card>
@@ -63,9 +64,9 @@ class BookRow extends React.Component<Props, State > {
     }
   showBookDetailViewHandler = (e:any): void =>  {
         const {handler} = this.props;
-        const _selectedId = this.state.selectedId;
+        const {selectedId} = this.state;
         if (handler !== undefined && handler !== null) {
-            handler(_selectedId);
+            handler(selectedId);
         }
     }
 }

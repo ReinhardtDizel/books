@@ -26,28 +26,3 @@ export const queryPut = async (id:string, postData:any) => {
 export const simulateNetworkRequest = ():any => {
     return new Promise((resolve) => setTimeout(resolve, 2000));
 }
-
-
-
-
-//Old axios function from BookTable
-/* axios
-         .get(
-             booksDataURL, {
-                 headers: {"Access-Control-Allow-Origin": "*"}
-             }
-         )
-         .then(res => {
-                 if (res !== null && res !== undefined) {
-                     if (res.data !== null && res.data !== undefined) {
-                         const data = res.data;
-                         if (data !== null && data !== undefined) {
-                             this.setState({
-                                 bookComponent: res.data as BookEntity[],
-                             });
-                         }
-                     }
-                 }
-             }
-         );
-     */

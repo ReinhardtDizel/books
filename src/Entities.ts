@@ -3,8 +3,8 @@ export interface Book {
     id?: string;
     title?: string;
     description?: string;
-    publishingDate?: Date;
-    imageSource?: string;
+    publishing?: Date;
+    image?: string;
     authors?: Author[];
 }
 

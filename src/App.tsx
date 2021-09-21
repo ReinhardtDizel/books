@@ -1,28 +1,28 @@
 import React from "react";
-import {Container, Row, Col} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import BooksTable from "./BooksTable";
-import EditRow from "./EditRow";
+import Editor from "./Editor";
 import {Author, Book} from "./Entities";
-import API, {booksDataURL, queryGet, queryPut} from "./API";
+import {queryGet, queryPut} from "./API";
 import Popup from "./PopupComponent";
 
 interface Props {
     id?:string;
     title?: string;
     authors?: Author[];
-    publishingDate?: Date;
+    publishing?: Date;
     imageSource?: string;
 }
 interface State {
     id?:string;
     title?: string;
     authors?: Author[];
-    publishingDate?: Date;
-    imageSource?: string;
-    booksArray?: Book[] | null;
+    publishing?: Date;
+    image?: string;
+    books?: Book[] | null;
     showPopUp: boolean;
-    dataSaved: boolean;
+    saved: boolean;
     isLoading: boolean;
 }
 
@@ -33,11 +33,11 @@ class PageGrid extends React.Component<Props, State> {
             id: '',
             title: '',
             authors: [] as Author[],
-            publishingDate: undefined,
-            imageSource: '',
-            booksArray: [] as Book[],
+            publishing: undefined,
+            image: '',
+            books: [] as Book[],
             showPopUp: false,
-            dataSaved: false,
+            saved: false,
             isLoading: false,
         };
 
@@ -47,12 +47,12 @@ class PageGrid extends React.Component<Props, State> {
 
 
    findSelectedRow =(event:any): any => {
-       let tempBooksArray  = this.state.booksArray;
-       let _find: Book | undefined;
-       if(tempBooksArray!== undefined && tempBooksArray !== null) {
-           _find = tempBooksArray.find(e => e.id === event);
-           if (_find !== undefined && _find !== null) {
-               return _find;
+       let {books}  = this.state;
+       let selected: Book | undefined;
+       if(books!== undefined && books !== null) {
+           selected = books.find(e => e.id === event);
+           if (selected !== undefined && selected !== null) {
+               return selected;
            }
            else
                return undefined;
@@ -60,26 +60,23 @@ class PageGrid extends React.Component<Props, State> {
        else
            return undefined;
     }
-    //=======================================================================
-    selectedToInput = ():void => { // по феншую
-        console.log("event")
+    
+    selectedToInput = ():void => { // по феншую        
     }
-    //=======================================================================
-    updateBooksArray(e:boolean) {
+    
+    updateBooks(e:boolean) {
         queryGet().then(res => {
-            if (res!== null && res !== undefined) {
-                const inData:any = res.data;
-                console.log(inData);
+            if (res!== null && res !== undefined) {                              
                 this.setState({
-                    booksArray: res.data,
+                    books: res.data,
                 });
                 if(e){
-                    const id = this.state.id;
+                    const {id} = this.state;
                     const _find: Book = res.data.find( (r: { id: string | undefined; }) => r.id === id );
                     this.setState({
                         title: _find.title,
-                        publishingDate: _find.publishingDate,
-                        imageSource: _find.imageSource,
+                        publishing: _find.publishing,
+                        image: _find.image,
                     });
                 }
             }
@@ -90,21 +87,21 @@ class PageGrid extends React.Component<Props, State> {
         this.setState({
             showPopUp: e,
         });
-       this.updateBooksArray(true);
+       this.updateBooks(true);
     }
 
-    saveBtnHandler  = (row:Book):void => { // по феншую
-        const id = this.state.id;
+    saveButtonHandler  = (row:Book):void => { // по феншую
+        const {id} = this.state;
           if(id !== undefined) {
               this.setState({
-                  dataSaved: false,
+                  saved: false,
                   isLoading: true,
               });
               queryPut(id, row).then(res => {
                   if( res.status == 200) {
                       this.setState({
                           showPopUp: true,
-                          dataSaved: true,
+                          saved: true,
                           isLoading: false,
                       });
                   }
@@ -114,27 +111,36 @@ class PageGrid extends React.Component<Props, State> {
     }
 
     openBookDetailsView = (event:any): void => {
-        const _find = this.findSelectedRow(event);
+        const selected = this.findSelectedRow(event);
         this.setState({
-            id:_find.id,
-            title: _find.title,
-            publishingDate: _find.publishingDate,
-            imageSource: _find.imageSource,
+            id:selected.id,
+            title: selected.title,
+            publishing: selected.publishingDate,
+            image: selected.image,
         });
     }
 
     componentWillMount() {
-        this.updateBooksArray(false);
+        this.updateBooks(false);
     }
 
     render() {
-        console.log(" render: ")
-        console.log(this.state.booksArray)
+
+        const {
+            showPopUp,
+            books,
+            isLoading,
+            saved,
+            title,
+            publishing,
+            image,
+        } = this.state;
+
         return (
             <Container fluid>
 
                 <Popup
-                    showPopUp={this.state.showPopUp}
+                    showPopUp={showPopUp}
                     setShow={this.showPopUp}
                 >
 
@@ -147,19 +153,19 @@ class PageGrid extends React.Component<Props, State> {
                             <tr></tr>
                             </thead>
                             <BooksTable
-                                booksArray={this.state.booksArray}
+                                books={books}
                                 handler={this.openBookDetailsView}
                             />
                         </Table>
                     </Col>
-                    <EditRow
-                        isLoading={this.state.isLoading}
-                        dataSaved={this.state.dataSaved}
-                        saveBtnHandler={this.saveBtnHandler}
+                    <Editor
+                        isLoading={isLoading}
+                        saved={saved}
+                        saveButtonHandler={this.saveButtonHandler}
                         handler={this.selectedToInput}
-                        title={this.state.title}
-                        publishingDate={this.state.publishingDate}
-                        imageSource={this.state.imageSource}
+                        title={title}
+                        publishing={publishing}
+                        image={image}
                     />
                 </Row>
             </Container>// BooksTable handler={this.openBookDetailsView} свойства компонента в <>
