@@ -3,27 +3,27 @@ import {Container, Row, Col} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import BooksTable from "./BooksTable";
 import EditRow from "./EditRow";
-import {BookEntity} from "./Entities";
+import {Author, Book} from "./Entities";
 import API, {booksDataURL, queryGet, queryPut} from "./API";
 import Popup from "./PopupComponent";
 
 interface Props {
     id?:string;
     title?: string;
-    authorName?: string;
-    publishingHouse?: string;
-    publishingDate?: string;
-    productImageUrl?: string;
+    authors?: Author[];
+    publishingDate?: Date;
+    imageSource?: string;
 }
 interface State {
     id?:string;
     title?: string;
-    authorName?: string;
-    publishingHouse?: string;
-    publishingDate?: string;
-    productImageUrl?: string;
-    booksArray?: BookEntity[] | null;
+    authors?: Author[];
+    publishingDate?: Date;
+    imageSource?: string;
+    booksArray?: Book[] | null;
     showPopUp: boolean;
+    dataSaved: boolean;
+    isLoading: boolean;
 }
 
 class PageGrid extends React.Component<Props, State> {
@@ -32,20 +32,23 @@ class PageGrid extends React.Component<Props, State> {
         this.state = {
             id: '',
             title: '',
-            authorName: '',
-            publishingHouse: '',
-            publishingDate: '',
-            productImageUrl: '',
-            booksArray: [] as BookEntity[],
+            authors: [] as Author[],
+            publishingDate: undefined,
+            imageSource: '',
+            booksArray: [] as Book[],
             showPopUp: false,
+            dataSaved: false,
+            isLoading: false,
         };
 
 
     }
 
+
+
    findSelectedRow =(event:any): any => {
        let tempBooksArray  = this.state.booksArray;
-       let _find: BookEntity | undefined;
+       let _find: Book | undefined;
        if(tempBooksArray!== undefined && tempBooksArray !== null) {
            _find = tempBooksArray.find(e => e.id === event);
            if (_find !== undefined && _find !== null) {
@@ -65,18 +68,18 @@ class PageGrid extends React.Component<Props, State> {
     updateBooksArray(e:boolean) {
         queryGet().then(res => {
             if (res!== null && res !== undefined) {
+                const inData:any = res.data;
+                console.log(inData);
                 this.setState({
                     booksArray: res.data,
                 });
                 if(e){
                     const id = this.state.id;
-                    const _find: BookEntity = res.data.find( (r: { id: string | undefined; }) => r.id === id );
+                    const _find: Book = res.data.find( (r: { id: string | undefined; }) => r.id === id );
                     this.setState({
                         title: _find.title,
-                        authorName: _find.authorName,
-                        publishingHouse: _find.publishingHouse,
                         publishingDate: _find.publishingDate,
-                        productImageUrl: _find.productImageUrl,
+                        imageSource: _find.imageSource,
                     });
                 }
             }
@@ -90,13 +93,19 @@ class PageGrid extends React.Component<Props, State> {
        this.updateBooksArray(true);
     }
 
-    saveBtnHandler  = (row:BookEntity):void => { // по феншую
+    saveBtnHandler  = (row:Book):void => { // по феншую
         const id = this.state.id;
           if(id !== undefined) {
+              this.setState({
+                  dataSaved: false,
+                  isLoading: true,
+              });
               queryPut(id, row).then(res => {
                   if( res.status == 200) {
                       this.setState({
                           showPopUp: true,
+                          dataSaved: true,
+                          isLoading: false,
                       });
                   }
           } );
@@ -109,10 +118,8 @@ class PageGrid extends React.Component<Props, State> {
         this.setState({
             id:_find.id,
             title: _find.title,
-            authorName: _find.authorName,
-            publishingHouse: _find.publishingHouse,
             publishingDate: _find.publishingDate,
-            productImageUrl: _find.productImageUrl,
+            imageSource: _find.imageSource,
         });
     }
 
@@ -121,6 +128,8 @@ class PageGrid extends React.Component<Props, State> {
     }
 
     render() {
+        console.log(" render: ")
+        console.log(this.state.booksArray)
         return (
             <Container fluid>
 
@@ -144,13 +153,13 @@ class PageGrid extends React.Component<Props, State> {
                         </Table>
                     </Col>
                     <EditRow
+                        isLoading={this.state.isLoading}
+                        dataSaved={this.state.dataSaved}
                         saveBtnHandler={this.saveBtnHandler}
                         handler={this.selectedToInput}
                         title={this.state.title}
-                        authorName={this.state.authorName}
-                        publishingHouse={this.state.publishingHouse}
                         publishingDate={this.state.publishingDate}
-                        productImageUrl={this.state.productImageUrl}
+                        imageSource={this.state.imageSource}
                     />
                 </Row>
             </Container>// BooksTable handler={this.openBookDetailsView} свойства компонента в <>
