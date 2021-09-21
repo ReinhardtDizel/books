@@ -35,7 +35,8 @@ class ISaveButton extends React.Component<Props, State> {
                 className='saveBtn'
                 size="sm"
                 variant="dark"
-            >{isLoading ? 'Loading…' : 'Save'}
+            >
+                {isLoading ? 'Loading…' : 'Save'}
             </Button>
         )
     }

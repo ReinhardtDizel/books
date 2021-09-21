@@ -1,7 +1,9 @@
 import React from "react";
 import {Container, Row, Col} from "react-bootstrap";
 import BookRow from "./BookRow";
-import {Author, Book} from "./Entities";
+import {Author} from "../Model/Author";
+import {Book} from "../Model/Book";
+
 
 interface Props {
     id?: string;

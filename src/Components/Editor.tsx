@@ -3,18 +3,17 @@ import {Container, Row, Col, Form, FormControl} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import {Button} from "react-bootstrap";
 import InputGroup from 'react-bootstrap/InputGroup'
-import {Author, Book} from "./Entities";
-import ISaveButton from "./myButtonComponent";
 
+import ISaveButton from "./SaveButton";
+import {Book} from "../Model/Book";
+import {Author} from "../Model/Author";
 
-
-//=======================================================================
 const lbl_Title: string = "Title";
 const lbl_AuthorName: string = "Author Name";
 const lbl_PublishingHouse: string = "Publishing House";
 const lbl_Publishing: string = "Publishing Date";
 const lbl_Image: string = "Book Image";
-//=======================================================================
+
 
 interface Props {
     title?: string;
@@ -55,14 +54,11 @@ class Editor extends  React.Component<Props, State>{
         this.CancelButtonClicked = this.CancelButtonClicked.bind(this);
         this.saveButtonHandler = this.saveButtonHandler.bind(this);
     }
-    //=================================================================================
-
-    //=================================================================================
-    handleInputChange = (event: any):void => { // по феншую
+    handleInputChange = (event: any):void => {
         const { name, value } = event.target;
         if( name == 'title' || 'authorName' || 'publishingHouse' || 'publishingDate' ||  'productImageUrl') {
             this.setState({
-                [name]: value, // запятая по феншую
+                [name]: value,
             });
         }
     }

@@ -1,3 +1,4 @@
+import {Author} from './Author';
 
 export interface Book {
     id?: string;
@@ -7,11 +8,3 @@ export interface Book {
     image?: string;
     authors?: Author[];
 }
-
-export interface Author {
-    id?: string;
-    name?: string;
-    bio?: string;
-}
-
-
